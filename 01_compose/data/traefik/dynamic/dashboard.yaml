@@ -1,0 +1,8 @@
+http:
+  routers:
+    traefik-dashboard:
+      rule: "Host(`dashboard.docker.localhost`)"
+      entryPoints:
+        - websecure
+      service: api@internal
+      tls: true

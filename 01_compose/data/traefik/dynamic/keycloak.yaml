@@ -1,0 +1,41 @@
+http:
+  routers:
+    keycloak-public:
+      entryPoints:
+        - websecure
+      rule: "Host(`keycloak.docker.localhost`)"
+      service: keycloak-service
+      middlewares:
+        - keycloak-headers
+      tls: {}
+
+    keycloak-public-2:
+      entryPoints:
+        - keycloak
+      rule: "Host(`keycloak.docker.localhost`)"
+      service: keycloak-service
+      middlewares:
+        - keycloak-headers
+
+    keycloak-health:
+      entryPoints:
+        - websecure
+      rule: "Host(`keycloak.docker.localhost`) && PathPrefix(`/health`)"
+      service: keycloak-health-service
+      tls: {}
+
+  services:
+    keycloak-service:
+      loadBalancer:
+        servers:
+          - url: "http://keycloak:8180"
+    keycloak-health-service:
+      loadBalancer:
+        servers:
+          - url: "http://keycloak:9000"
+
+  middlewares:
+    keycloak-headers:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"

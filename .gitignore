@@ -1,0 +1,10 @@
+# Env specific
+*.pem
+.env
+env/
+!.env.example
+
+# Terraform
+.terraform
+.terraform.lock*
+*.tfstate*

@@ -1,0 +1,26 @@
+http:
+  routers:
+    devops-final-backend:
+      entryPoints:
+        - websecure
+      rule: "Host(`api.df.docker.localhost`)"
+      service: devops-final-backend-service
+      tls: {}
+
+    devops-final-frontend:
+      entryPoints:
+        - websecure
+      rule: "Host(`df.docker.localhost`)"
+      service: devops-final-frontend-service
+      tls: {}
+
+  services:
+    devops-final-backend-service:
+      loadBalancer:
+        servers:
+          - url: "http://api:80"
+
+    devops-final-frontend-service:
+      loadBalancer:
+        servers:
+          - url: "http://streamlit:8501"

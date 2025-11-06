@@ -1,0 +1,94 @@
+services:
+  traefik:
+    image: traefik:v3.5.3
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - devops-final
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+      - "8180:8180"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:Z
+      - ./data/traefik/traefik.yaml:/etc/traefik/traefik.yml:ro
+      - traefik_certs:/certs:ro
+      - traefik_dynamic:/dynamic:ro
+
+  postgres:
+    image: postgres:16
+    env_file:
+      - ./env/postgres.env
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - devops-final
+    depends_on:
+      traefik:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak"]
+      interval: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3.2
+    command: ["start-dev"]
+    env_file:
+      - ./compose/.env.keycloak
+    networks:
+      devops-final:
+        aliases:
+          - keycloak.docker.localhost
+    depends_on:
+      traefik:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+
+  api:
+    image: tudor0h/devops_final_backend:latest
+    env_file:
+      - ./compose/.env.devops_final_backend
+    networks:
+      devops-final:
+        aliases:
+          - api.df.docker.localhost
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - keycloak
+
+  streamlit:
+    image: tudor0h/devops_final_frontend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ./compose/.env.devops_final_frontend
+    networks:
+      devops-final:
+        aliases:
+          - df.docker.localhost
+    depends_on:
+      - api
+
+volumes:
+  # db_data: 
+  #   driver: local
+  #   driver_opts: { type: none, o: bind, device: ./compose/pg_keycloak_data/ }
+  devops_final_backend_keycloak-db-data:
+    external: true
+  traefik_certs:
+    driver: local
+    driver_opts: { type: none, o: bind, device: ./compose/traefik/certs }
+  traefik_dynamic:
+    driver: local
+    driver_opts: { type: none, o: bind, device: ./compose/traefik/dynamic }
+
+networks:
+  devops-final:
+    driver: bridge
+    # external: true
+      
