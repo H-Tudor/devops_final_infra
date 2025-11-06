@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "k8s.fullname" . }}
+  labels:
+    {{- include "k8s.labels" . | nindent 4 }}
+data:
+  AUTH_REDIRECT_URI: {{ .Values.config.auth.redirectUri | quote }}
+  AUTH_KEYCLOAK_SERVER_METADATA_URL: {{ .Values.config.auth.keycloak.serverMetadataUrl | quote }}
+  AUTH_KEYCLOAK_CLIENT_KWARGS_PROMPT: {{ .Values.config.auth.keycloak.clientKwargsPrompt | quote }}
+
+  BACKEND_HOST: {{ .Values.config.backend.host | quote }}
+  BACKEND_VERSION: {{ .Values.config.backend.version | quote }}
+
+  BACKEND_AUTH_HOST: {{ .Values.config.backend.auth.host | quote }}
+  BACKEND_AUTH_AUX_HOST: {{ .Values.config.backend.auth.auxHost | quote }}
+  BACKEND_AUTH_REALM: {{ .Values.config.backend.auth.realm | quote }}

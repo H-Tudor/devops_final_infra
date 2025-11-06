@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: keycloak-cert
+  namespace: keycloak
+spec:
+  domains:
+    - keycloak.auto-compose.dev

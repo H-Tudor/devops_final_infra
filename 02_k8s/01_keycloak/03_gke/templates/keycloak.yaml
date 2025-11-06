@@ -1,0 +1,42 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: {{ .Values.keycloak.name }}
+spec:
+  instances: {{ .Values.keycloak.replicas }}
+  # image: quay.io/my-company/my-keycloak:latest
+  # startOptimized: false
+  db:
+    vendor: postgres
+    host: {{ .Values.db.host }}
+    port: {{ .Values.db.port }}
+    database: {{ .Values.db.name }}
+    usernameSecret:
+      name: keycloak-db-secret
+      key: username
+    passwordSecret:
+      name: keycloak-db-secret
+      key: password
+
+  hostname:
+    hostname: keycloak.auto-compose.dev
+
+  http:
+    tlsSecret: ""      # no TLS inside Keycloak
+    httpEnabled: true  # explicitly enable HTTP
+
+  ingress:
+    enabled: false
+
+  proxy:
+    headers: xforwarded
+
+  readinessProbe:
+    periodSeconds: 20
+    failureThreshold: 5
+  livenessProbe:
+    periodSeconds: 20
+    failureThreshold: 5
+  startupProbe:
+    periodSeconds: 60
+    failureThreshold: 5

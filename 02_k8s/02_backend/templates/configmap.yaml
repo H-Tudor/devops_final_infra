@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "k8s.fullname" . }}
+  labels:
+    {{- include "k8s.labels" . | nindent 4 }}
+data:
+  APP_NAME: {{ .Values.config.appName | quote }}
+  APP_VERSION: {{ .Values.config.appVersion | quote }}
+  DEBUG: {{ .Values.config.debug | quote }}
+  LLM_MODEL: {{ .Values.config.llmModel | quote }}
+  LLM_PROVIDER: {{ .Values.config.llmProvider | quote }}
+  LLM_DRY_RUN: {{ .Values.config.llmDryRun | quote }}
+  LLM_BASE_URL: {{ .Values.config.llmBaseUrl | quote }}
+  KEYCLOAK_URL: {{ .Values.config.keycloakUrl | quote }}
+  KEYCLOAK_REALM: {{ .Values.config.keycloakRealm | quote }}

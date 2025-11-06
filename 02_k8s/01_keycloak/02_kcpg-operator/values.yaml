@@ -1,0 +1,9 @@
+cnpg:
+  name: postgres-db
+  storageSize: 10Gi
+  password: supersecurepassword
+
+keycloak:
+  name: example-kc
+  hostname: test.keycloak.org
+  replicas: 1
