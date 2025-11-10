@@ -34,22 +34,22 @@ module "cloud_run" {
   }
 
   domain = {
-    name = var.backend.domain.name
-    zone = var.backend.domain.zone
+    name = var.service.domain.name
+    zone = var.service.domain.zone
   }
 
   container = {
-    image = "${var.config.deployment.region}-docker.pkg.dev/${var.config.project_id}/${var.backend.image.name}:${var.backend.image.tag}"
+    image = var.service.image
 
     run = {
       args = ["start", "--optimized"]
-      port = var.backend.instance.port
+      port = var.service.instance.port
     }
 
     env = {
       APP_NAME    = "Devops Final"
       APP_VERSION = "vNext"
-      APP_PORT    = var.backend.instance.port
+      APP_PORT    = var.service.instance.port
       DEBUG       = true
 
       LLM_MODEL    = var.llm.model
@@ -64,9 +64,9 @@ module "cloud_run" {
 
     probes = {
       startup = {
-        delay      = 5
+        delay      = 10
         fail       = 3
-        period     = 3
+        period     = 5
         timeout    = 3
         http_probe = true
       }
@@ -79,18 +79,18 @@ module "cloud_run" {
       }
 
       tcp = {
-        port = var.backend.instance.port
+        port = var.service.instance.port
       }
 
       http = {
-        port = var.backend.instance.port
+        port = var.service.instance.port
         path = "/version"
       }
     }
   }
 
   instance = {
-    name                = var.backend.instance.name
+    name                = var.service.instance.name
     allow_idle_instance = false
     access = {
       public  = true

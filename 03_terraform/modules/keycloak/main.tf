@@ -1,5 +1,5 @@
 data "google_secret_manager_secret_version" "keycloak_admin_password" {
-  secret  = var.keycloak.instance.admin_password_secret
+  secret  = var.service.instance.admin_password_secret
   project = var.config.project_id
 }
 
@@ -17,16 +17,16 @@ module "cloud_run" {
   config = var.config
 
   domain = {
-    name = var.keycloak.domain.name
-    zone = var.keycloak.domain.zone
+    name = var.service.domain.name
+    zone = var.service.domain.zone
   }
 
   container = {
-    image = "${var.config.region}-docker.pkg.dev/${var.config.project_id}/${var.keycloak.image.name}:${var.keycloak.image.tag}"
+    image = var.service.image
 
     run = {
       args = ["start", "--optimized"]
-      port = var.keycloak.instance.port
+      port = var.service.instance.port
     }
 
     env = {
@@ -36,8 +36,8 @@ module "cloud_run" {
       KC_HOSTNAME_STRICT = false
 
       KC_PROXY     = "passthrough"
-      KC_HTTP_PORT = var.keycloak.instance.port
-      KC_HOSTNAME  = "https://${var.keycloak.domain.name}"
+      KC_HTTP_PORT = var.service.instance.port
+      KC_HOSTNAME  = "https://${var.service.domain.name}"
 
       KC_BOOTSTRAP_ADMIN_USERNAME = "admin"
       KC_BOOTSTRAP_ADMIN_PASSWORD = data.google_secret_manager_secret_version.keycloak_admin_password.secret_data
@@ -65,18 +65,18 @@ module "cloud_run" {
       }
 
       tcp = {
-        port = var.keycloak.instance.port
+        port = var.service.instance.port
       }
 
       http = {
-        port = var.keycloak.instance.port
+        port = var.service.instance.port
         path = "/"
       }
     }
   }
 
   instance = {
-    name = var.keycloak.instance.name
+    name = var.service.instance.name
     access = {
       public  = true
       members = ["allUsers"]

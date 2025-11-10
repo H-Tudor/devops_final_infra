@@ -20,5 +20,5 @@ module "keycloak" {
   }
 
   database = var.database
-  keycloak = var.keycloak
+  service  = var.service
 }

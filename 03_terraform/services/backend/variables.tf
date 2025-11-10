@@ -58,12 +58,13 @@ variable "llm" {
   }
 }
 
-variable "backend" {
+variable "service" {
   description = "Keycloak Configuration"
   type = object({
     image = object({
-      name = string
-      tag  = string
+      repository = string
+      name       = string
+      tag        = string
     })
 
     instance = object({
@@ -78,8 +79,9 @@ variable "backend" {
   })
   default = {
     image = {
-      name = "devops-final/backend"
-      tag  = "latest"
+      repository = "devops-final"
+      name       = "backend"
+      tag        = "latest"
     }
 
     instance = {

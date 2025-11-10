@@ -68,12 +68,13 @@ variable "database" {
   }
 }
 
-variable "keycloak" {
+variable "service" {
   description = "Keycloak Configuration"
   type = object({
     image = object({
-      name = string
-      tag  = string
+      repository = string
+      name       = string
+      tag        = string
     })
 
     instance = object({
@@ -88,8 +89,9 @@ variable "keycloak" {
   })
   default = {
     image = {
-      name = "devops-final/keycloak"
-      tag  = "26.3.2.1"
+      repository = "devops-final"
+      name       = "keycloak"
+      tag        = "26.3.2.1"
     }
 
     instance = {

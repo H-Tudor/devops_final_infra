@@ -31,12 +31,13 @@ variable "database" {
   })
 }
 
-variable "keycloak" {
+variable "service" {
   description = "Keycloak Configuration"
   type = object({
     image = object({
-      name = string
-      tag  = string
+      repository = string
+      name       = string
+      tag        = string
     })
 
     instance = object({

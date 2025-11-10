@@ -1,3 +1,14 @@
+data "google_artifact_registry_repository" "this_repo" {
+  location      = var.config.region
+  repository_id = var.container.image.repository
+}
+
+data "google_artifact_registry_docker_image" "this_image" {
+  location      = data.google_artifact_registry_repository.this_repo.location
+  repository_id = data.google_artifact_registry_repository.this_repo.repository_id
+  image_name    = "${var.container.image.name}:${var.container.image.tag}"
+}
+
 resource "google_cloud_run_v2_service" "this" {
   name                = var.instance.name
   location            = var.config.region
@@ -15,7 +26,7 @@ resource "google_cloud_run_v2_service" "this" {
 
   template {
     containers {
-      image   = var.container.image
+      image   = data.google_artifact_registry_docker_image.this_image.self_link
       command = length(var.container.run.command) > 0 ? var.container.run.command : null
       args    = length(var.container.run.args) > 0 ? var.container.run.args : null
 

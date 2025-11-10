@@ -21,7 +21,11 @@ variable "domain" {
 variable "container" {
   description = "Container Configuration"
   type = object({
-    image = string
+    image = object({
+      repository = string
+      name       = string
+      tag        = string
+    })
 
     run = object({
       command = optional(list(string), [])
