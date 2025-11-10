@@ -1,8 +1,12 @@
 # Env specific
-*.pem
 .env
 env/
 !.env.example
+
+# Certs
+*.pem
+*.key
+*.crt
 
 # Terraform
 .terraform
