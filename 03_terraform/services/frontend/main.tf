@@ -71,7 +71,7 @@ module "cloud_run" {
 
       AUTH_KEYCLOAK_CLIENT_ID            = var.keycloak.client_id
       AUTH_KEYCLOAK_CLIENT_SECRET        = data.google_secret_manager_secret_version.keycloak_frontend_secret.secret_data
-      AUTH_KEYCLOAK_SERVER_METADATA_URL  = "${var.keycloak.domain}/realms/d${var.keycloak.realm}/.well-known/openid-configuration"
+      AUTH_KEYCLOAK_SERVER_METADATA_URL  = "${var.keycloak.domain}/realms/${var.keycloak.realm}/.well-known/openid-configuration"
       AUTH_KEYCLOAK_CLIENT_KWARGS_PROMPT = "login"
 
       BACKEND_HOST    = var.backend.domain
