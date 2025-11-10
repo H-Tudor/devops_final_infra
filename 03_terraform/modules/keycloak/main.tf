@@ -58,11 +58,10 @@ module "cloud_run" {
       }
 
       liveness = {
-        delay      = 20
-        timeout    = 10
-        period     = 60
-        fail       = 11
-        http_probe = false
+        delay   = 20
+        timeout = 10
+        period  = 60
+        fail    = 11
       }
 
       tcp = {

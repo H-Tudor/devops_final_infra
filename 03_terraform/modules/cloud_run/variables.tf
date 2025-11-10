@@ -41,11 +41,10 @@ variable "container" {
       })
 
       liveness = object({
-        delay      = optional(number, 0)
-        timeout    = optional(number, 1)
-        period     = optional(number, 3)
-        fail       = optional(number, 1)
-        http_probe = optional(bool, true)
+        delay   = optional(number, 0)
+        timeout = optional(number, 1)
+        period  = optional(number, 3)
+        fail    = optional(number, 1)
       })
 
       tcp = object({
@@ -73,7 +72,7 @@ variable "instance" {
 
     resources = object({
       cpu               = optional(string, "1")
-      ram               = optional(string, "1Gi")
+      ram               = optional(string, "512Mi")
       cpu_startup_boost = optional(bool, false)
     })
 
