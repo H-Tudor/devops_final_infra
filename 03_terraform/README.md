@@ -16,6 +16,17 @@ Currently there are 3 service:
 
 This repo and more specifically this terraform configuration is imported for each service (backend and frontend) deploy by the github actions workflow and based on the service name the correct terraform folder is selected.
 
+For running in a CD pipeline you would need a serivce account with access rights to at least the following resources:
+
+- artifact registry writer: for pushing the new container images
+- cloud storage: for storing the state
+- service account user: run terraform actions
+- secret manager %: get secret contents
+- dns %: get, create and destroy dns entries
+- cloud run %: get, create and destroy instances
+- cloud sql %: get, create and destroy instances, database and users 
+
+
 ## Instance Management
 
 These services are configured as cloud run instances with minimum instances left to default which is zero, thus after a while they need will take a while to start thus service might be initially unavailable for the first user in a batch -> this can be optimized with additional costs
@@ -48,3 +59,11 @@ Frontend:
     - backend.auth.client_secret: the secret configured in the keycloak backend realm for the client_id
     - backend.auth.user_secret: the password configured for the app-user in the keycloak backend realm
     - service.instance.cookie_secret: the secret used to secure the auth cookie
+
+## Known issues
+
+- no secret env variables in cloud run 
+- missing terraform to configure the cloud prerequisites (domain, service accounts)
+- missing terraform to configure the keycloak realm
+- missing global cold deploy automation
+- use of public ip for db access instead of a private connection
