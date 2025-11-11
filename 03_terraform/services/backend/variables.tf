@@ -52,7 +52,7 @@ variable "llm" {
     secret   = string
   })
   default = {
-    model    = "gpt-5-nano"
+    model    = "gpt-5"
     provider = "openai"
     secret   = "openai-api-key"
   }

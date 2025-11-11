@@ -81,9 +81,15 @@ module "cloud_run" {
       public  = true
       members = ["allUsers"]
     }
-    allow_idle_instance = false
-    resources = {
+
+    scaling = {
+      min_instance_count = 1
+      max_instance_count = 20
+      allow_idle_instance = false
       cpu_startup_boost = true
+    }
+
+    resources = {
       cpu               = "2"
       ram               = "1Gi"
     }

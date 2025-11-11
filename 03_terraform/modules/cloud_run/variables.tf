@@ -77,10 +77,13 @@ variable "instance" {
     resources = object({
       cpu               = optional(string, "1")
       ram               = optional(string, "512Mi")
-      cpu_startup_boost = optional(bool, false)
     })
 
-    allow_idle_instance = bool
-
+    scaling = object({
+      min_instance_count = optional(number, 0) 
+      max_instance_count = optional(number, 20) 
+      allow_idle_instance = optional(bool, false)
+      cpu_startup_boost = optional(bool, false)
+    })
   })
 }

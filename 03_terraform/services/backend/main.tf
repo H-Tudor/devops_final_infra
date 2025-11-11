@@ -91,7 +91,14 @@ module "cloud_run" {
 
   instance = {
     name                = var.service.instance.name
-    allow_idle_instance = false
+
+    scaling = {
+      min_instance_count = 1
+      max_instance_count = 20
+      allow_idle_instance = false
+      cpu_startup_boost = true
+    }
+
     access = {
       public  = true
       members = ["allUsers"]

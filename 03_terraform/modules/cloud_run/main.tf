@@ -16,7 +16,8 @@ resource "google_cloud_run_v2_service" "this" {
   deletion_protection = false
 
   scaling {
-    max_instance_count = 20
+    min_instance_count = var.instance.scaling.min_instance_count
+    max_instance_count = var.instance.scaling.max_instance_count
   }
 
   traffic {
@@ -54,8 +55,8 @@ resource "google_cloud_run_v2_service" "this" {
       # }
 
       resources {
-        cpu_idle          = var.instance.allow_idle_instance
-        startup_cpu_boost = var.instance.resources.cpu_startup_boost
+        cpu_idle          = var.instance.scaling.allow_idle_instance
+        startup_cpu_boost = var.instance.scaling.cpu_startup_boost
         limits = {
           "cpu"    = var.instance.resources.cpu
           "memory" = var.instance.resources.ram
