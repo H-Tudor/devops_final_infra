@@ -26,3 +26,17 @@ For Improving the base keycloak image, check the `00_keycloak` folder (see the k
 for more details)
 
 A keycloak configuration is in works in the `02_keycloak` folder but it is not functional as of now.
+
+## System Architecture
+
+![System Architecture](./00_docs/diagrams/00_architecture.png)
+
+## Cloud Configuration
+
+
+![Cloud Configuration](./00_docs/diagrams/01_cloud_infrastructure.png)
+
+## Deployment Configuration
+
+
+![Deployment Architecture](./00_docs/diagrams/02_deployment_strategy.png)
