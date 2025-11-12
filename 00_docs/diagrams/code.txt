@@ -1,0 +1,61 @@
+# Architecture
+
+user [icon: user, label: Human User]
+
+auth [icon: keycloak, label: Auth Provider]
+auth_db [icon: postgres, label: User persistance]
+
+fe [icon: streamlit, label: Streamlit User Interface]
+be [icon: fastapi, label: FastAPI Backend]
+
+llm_ollama [icon: ollama, label: Test LLM Provider]
+llm_openai [icon: openai, label: Prod LLM Provider]
+
+user -> fe -> be
+auth -> auth_db
+fe -> auth
+be -> auth
+be -> llm_ollama
+be -> llm_openai
+
+# Cloud
+
+user [icon: user]
+dns [icon: gcp-cloud-dns, label: auto-compose.dev]
+keycloak [icon: gcp-cloud-run, label: keycloak.auto-compose.dev]
+keycloak_db [icon: gcp-cloud-sql, label: Postgres16]
+be [icon: gcp-cloud-run, label: app.auto-compose.dev]
+fe [icon: gcp-cloud-run, label: api.auto-compose.dev]
+llm [icon: openai]
+
+fe -> be -> llm
+
+user -> dns --> keycloak
+dns -> fe -> keycloak 
+dns --> be -> keycloak 
+keycloak -> keycloak_db
+
+# Deployment
+
+fe_repo [icon: github, label: Frontend Repository]
+be_repo [icon: github, label: Backend Repository]
+infra_repo [icon: github, label: Infra Repository]
+
+build [icon: github-actions, label: Build CD Pipeline]
+deploy [icon:  github-actions, label: Deploy CD Pipeline]
+terraform [icon: terraform, label: OpenTofu]
+
+registry [icon: gcp-artifact-registry, label: DevOps Final Registry]
+be [icon: gcp-cloud-run, label: api.auto-compose.dev]
+fe [icon: gcp-cloud-run, label: app.auto-compose.dev]
+
+fe_repo -> build -> registry
+be_repo -> build
+
+registry -> deploy
+infra_repo -> deploy
+terraform -> deploy
+
+deploy -> fe
+deploy -> be
+
