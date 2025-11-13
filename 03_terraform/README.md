@@ -46,19 +46,22 @@ For each service domain aquisition in GCP takes around 15 - 20 minutes until dom
 Each service has a couple of secrets required, and their name is is configurable in the service variables; below you will find the list of variables and their meaning. You will need
 to create them ahead of time.
 
-Keycloak:
-    - database.config.password_secret: the password of the db user 
-    - service.instance.admin_password_secret: the default password for the admin user
+**Keycloak**:
 
-Backend:
-    - keycloak.client_secret: the secret configured in the keycloak backend realm for the client_id
-    - llm.secret: the secret key used to connect to the llm provider
+- database.config.password_secret: the password of the db user 
+- service.instance.admin_password_secret: the default password for the admin user
 
-Frontend:
-    - keycloak.client_secret: the secret configured in the keycloak frontend realm for the client_id
-    - backend.auth.client_secret: the secret configured in the keycloak backend realm for the client_id
-    - backend.auth.user_secret: the password configured for the app-user in the keycloak backend realm
-    - service.instance.cookie_secret: the secret used to secure the auth cookie
+**Backend**:
+
+- keycloak.client_secret: the secret configured in the keycloak backend realm for the client_id
+- llm.secret: the secret key used to connect to the llm provider
+
+**Frontend**:
+
+- keycloak.client_secret: the secret configured in the keycloak frontend realm for the client_id
+- backend.auth.client_secret: the secret configured in the keycloak backend realm for the client_id
+- backend.auth.user_secret: the password configured for the app-user in the keycloak backend realm
+- service.instance.cookie_secret: the secret used to secure the auth cookie
 
 ## Known issues
 
